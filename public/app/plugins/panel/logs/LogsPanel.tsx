@@ -1,5 +1,6 @@
 import { css, cx } from '@emotion/css';
 import React, { useCallback, useMemo, useRef, useLayoutEffect, useState } from 'react';
+import { useAsync } from 'react-use';
 
 import {
   PanelProps,
@@ -11,9 +12,14 @@ import {
   DataHoverClearEvent,
   DataHoverEvent,
   CoreApp,
+  DataQueryResponse,
+  LogRowContextOptions,
+  hasLogsContextSupport,
 } from '@grafana/data';
+import { getDataSourceSrv } from '@grafana/runtime';
 import { CustomScrollbar, useStyles2, usePanelContext } from '@grafana/ui';
 import { getFieldLinksForExplore } from 'app/features/explore/utils/links';
+import { LogRowContextModal } from 'app/features/logs/components/log-context/LogRowContextModal';
 import { PanelDataErrorView } from 'app/features/panel/components/PanelDataErrorView';
 
 import { LogLabels } from '../../../features/logs/components/LogLabels';
@@ -45,6 +51,25 @@ export const LogsPanel = ({
   const style = useStyles2(getStyles);
   const [scrollTop, setScrollTop] = useState(0);
   const logsContainerRef = useRef<HTMLDivElement>(null);
+  const [contextRow, setContextRow] = useState<LogRowModel | null>(null);
+  const [contextOpen, setContextOpen] = useState(false);
+  const [closeCallback, setCloseCallback] = useState<(() => void) | null>(null);
+  const dataSource = useAsync(async () => {
+    return await getDataSourceSrv().get(data.request?.targets[0].datasource?.uid);
+  });
+
+  const getLogRowContext = useCallback(
+    async (row: LogRowModel, origRow: LogRowModel, options: LogRowContextOptions): Promise<DataQueryResponse> => {
+      const ds = dataSource.value;
+      if (!hasLogsContextSupport(ds)) {
+        return Promise.resolve({ data: [] });
+      }
+
+      const query = data.request?.targets[0];
+      return query ? ds.getLogRowContext(row, options, query) : Promise.resolve({ data: [] });
+    },
+    [data.request?.targets, dataSource.value]
+  );
 
   const { eventBus } = usePanelContext();
   const onLogRowHover = useCallback(
@@ -63,6 +88,20 @@ export const LogsPanel = ({
     },
     [eventBus]
   );
+
+  const onCloseContext = useCallback(() => {
+    setContextRow(null);
+    setContextOpen(false);
+    if (closeCallback) {
+      closeCallback();
+    }
+  }, [closeCallback]);
+
+  const onOpenContext = useCallback((row: LogRowModel, onClose: () => void) => {
+    setContextRow(row);
+    setContextOpen(true);
+    setCloseCallback(onClose);
+  }, []);
 
   // Important to memoize stuff here, as panel rerenders a lot for example when resizing.
   const [logRows, deduplicatedRows, commonLabels] = useMemo(() => {
@@ -102,28 +141,42 @@ export const LogsPanel = ({
   );
 
   return (
-    <CustomScrollbar autoHide scrollTop={scrollTop}>
-      <div className={style.container} ref={logsContainerRef}>
-        {showCommonLabels && !isAscending && renderCommonLabels()}
-        <LogRows
-          logRows={logRows}
-          deduplicatedRows={deduplicatedRows}
-          dedupStrategy={dedupStrategy}
-          showLabels={showLabels}
-          showTime={showTime}
-          wrapLogMessage={wrapLogMessage}
-          prettifyLogMessage={prettifyLogMessage}
-          timeZone={timeZone}
-          getFieldLinks={getFieldLinks}
+    <>
+      {contextRow && (
+        <LogRowContextModal
+          open={contextOpen}
+          row={contextRow}
+          onClose={onCloseContext}
+          getRowContext={(row, options) => getLogRowContext(row, contextRow, options)}
           logsSortOrder={sortOrder}
-          enableLogDetails={enableLogDetails}
-          previewLimit={isAscending ? logRows.length : undefined}
-          onLogRowHover={onLogRowHover}
-          app={CoreApp.Dashboard}
+          timeZone={timeZone}
         />
-        {showCommonLabels && isAscending && renderCommonLabels()}
-      </div>
-    </CustomScrollbar>
+      )}
+      <CustomScrollbar autoHide scrollTop={scrollTop}>
+        <div className={style.container} ref={logsContainerRef}>
+          {showCommonLabels && !isAscending && renderCommonLabels()}
+          <LogRows
+            logRows={logRows}
+            showContextToggle={() => true}
+            deduplicatedRows={deduplicatedRows}
+            dedupStrategy={dedupStrategy}
+            showLabels={showLabels}
+            showTime={showTime}
+            wrapLogMessage={wrapLogMessage}
+            prettifyLogMessage={prettifyLogMessage}
+            timeZone={timeZone}
+            getFieldLinks={getFieldLinks}
+            logsSortOrder={sortOrder}
+            enableLogDetails={enableLogDetails}
+            previewLimit={isAscending ? logRows.length : undefined}
+            onLogRowHover={onLogRowHover}
+            app={CoreApp.Dashboard}
+            onOpenContext={onOpenContext}
+          />
+          {showCommonLabels && isAscending && renderCommonLabels()}
+        </div>
+      </CustomScrollbar>
+    </>
   );
 };
 
