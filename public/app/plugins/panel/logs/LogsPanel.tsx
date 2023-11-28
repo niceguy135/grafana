@@ -54,21 +54,26 @@ export const LogsPanel = ({
   const [contextRow, setContextRow] = useState<LogRowModel | null>(null);
   const [contextOpen, setContextOpen] = useState(false);
   const [closeCallback, setCloseCallback] = useState<(() => void) | null>(null);
-  const dataSource = useAsync(async () => {
-    return await getDataSourceSrv().get(data.request?.targets[0].datasource?.uid);
+  const { value: dataSources } = useAsync(async () => {
+    const raw = await Promise.all(
+      (data.request?.targets ?? [])
+        .filter((target) => target.datasource?.uid)
+        .map((target) => getDataSourceSrv().get(target.datasource?.uid).then((ds) => ({key:target.refId, ds})))
+    );
+
+    return new Map(raw.map(({key, ds}) => [key, ds]));
   });
 
   const getLogRowContext = useCallback(
     async (row: LogRowModel, origRow: LogRowModel, options: LogRowContextOptions): Promise<DataQueryResponse> => {
-      const ds = dataSource.value;
-      if (!hasLogsContextSupport(ds)) {
+      if (!hasLogsContextSupport(dataSource)) {
         return Promise.resolve({ data: [] });
       }
 
       const query = data.request?.targets[0];
-      return query ? ds.getLogRowContext(row, options, query) : Promise.resolve({ data: [] });
+      return query ? dataSource.getLogRowContext(row, options, query) : Promise.resolve({ data: [] });
     },
-    [data.request?.targets, dataSource.value]
+    [data.request?.targets, dataSource]
   );
 
   const { eventBus } = usePanelContext();
