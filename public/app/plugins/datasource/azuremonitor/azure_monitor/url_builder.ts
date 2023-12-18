@@ -3,12 +3,12 @@ import { TemplateSrv } from '@grafana/runtime';
 import { AzureMonitorResource, GetMetricNamespacesQuery, GetMetricNamesQuery } from '../types';
 
 export default class UrlBuilder {
-  static buildResourceUri(templateSrv: TemplateSrv, resource: AzureMonitorResource, multipleResources?: boolean) {
+  static buildResourceUri(templateSrv: TemplateSrv, resource: AzureMonitorResource) {
     const urlArray = [];
     const { subscription, resourceGroup, metricNamespace, resourceName } = resource;
     if (subscription) {
       urlArray.push('/subscriptions', subscription);
-      if (resourceGroup && !multipleResources) {
+      if (resourceGroup) {
         urlArray.push('resourceGroups', resourceGroup);
 
         if (metricNamespace && resourceName) {
@@ -93,8 +93,7 @@ export default class UrlBuilder {
           resourceGroup,
           metricNamespace,
           resourceName,
-        },
-        multipleResources
+        }
       );
     }
     let url = `${baseUrl}${resourceUri}/providers/microsoft.insights/metricdefinitions?api-version=${apiVersion}`;
