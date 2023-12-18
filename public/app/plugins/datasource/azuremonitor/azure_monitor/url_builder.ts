@@ -86,15 +86,12 @@ export default class UrlBuilder {
       resourceUri = query.resourceUri;
     } else {
       const { subscription, resourceGroup, metricNamespace, resourceName } = query;
-      resourceUri = UrlBuilder.buildResourceUri(
-        templateSrv,
-        {
-          subscription,
-          resourceGroup,
-          metricNamespace,
-          resourceName,
-        }
-      );
+      resourceUri = UrlBuilder.buildResourceUri(templateSrv, {
+        subscription,
+        resourceGroup,
+        metricNamespace,
+        resourceName,
+      });
     }
     let url = `${baseUrl}${resourceUri}/providers/microsoft.insights/metricdefinitions?api-version=${apiVersion}`;
     if (customNamespace) {
