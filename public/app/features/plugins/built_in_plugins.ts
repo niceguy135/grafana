@@ -1,7 +1,5 @@
 const graphitePlugin = async () =>
   await import(/* webpackChunkName: "graphitePlugin" */ 'app/plugins/datasource/graphite/module');
-const cloudwatchPlugin = async () =>
-  await import(/* webpackChunkName: "cloudwatchPlugin" */ 'app/plugins/datasource/cloudwatch/module');
 const dashboardDSPlugin = async () =>
   await import(/* webpackChunkName "dashboardDSPlugin" */ 'app/plugins/datasource/dashboard/module');
 const elasticsearchPlugin = async () =>
@@ -61,7 +59,6 @@ const tableOldPanel = async () =>
 const builtInPlugins: Record<string, System.Module | (() => Promise<System.Module>)> = {
   // datasources
   'core:plugin/graphite': graphitePlugin,
-  'core:plugin/cloudwatch': cloudwatchPlugin,
   'core:plugin/dashboard': dashboardDSPlugin,
   'core:plugin/elasticsearch': elasticsearchPlugin,
   'core:plugin/grafana': grafanaPlugin,
