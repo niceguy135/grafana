@@ -8,8 +8,6 @@ const elasticsearchPlugin = async () =>
   await import(/* webpackChunkName: "elasticsearchPlugin" */ 'app/plugins/datasource/elasticsearch/module');
 const grafanaPlugin = async () =>
   await import(/* webpackChunkName: "grafanaPlugin" */ 'app/plugins/datasource/grafana/module');
-const influxdbPlugin = async () =>
-  await import(/* webpackChunkName: "influxdbPlugin" */ 'app/plugins/datasource/influxdb/module');
 const lokiPlugin = async () => await import(/* webpackChunkName: "lokiPlugin" */ 'app/plugins/datasource/loki/module');
 const mixedPlugin = async () =>
   await import(/* webpackChunkName: "mixedPlugin" */ 'app/plugins/datasource/mixed/module');
@@ -67,7 +65,6 @@ const builtInPlugins: Record<string, System.Module | (() => Promise<System.Modul
   'core:plugin/dashboard': dashboardDSPlugin,
   'core:plugin/elasticsearch': elasticsearchPlugin,
   'core:plugin/grafana': grafanaPlugin,
-  'core:plugin/influxdb': influxdbPlugin,
   'core:plugin/loki': lokiPlugin,
   'core:plugin/mixed': mixedPlugin,
   'core:plugin/prometheus': prometheusPlugin,
