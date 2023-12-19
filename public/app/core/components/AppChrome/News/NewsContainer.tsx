@@ -6,9 +6,6 @@ import { GrafanaTheme2 } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
 import { Button, Drawer, ToolbarButton, useStyles2, Text } from '@grafana/ui';
 import { t } from 'app/core/internationalization';
-import { DEFAULT_FEED_URL } from 'app/plugins/panel/news/constants';
-
-import { NewsWrapper } from './NewsWrapper';
 
 interface NewsContainerProps {
   className?: string;
@@ -49,7 +46,6 @@ export function NewsContainer({ className }: NewsContainerProps) {
           onClose={onToggleShowNewsDrawer}
           size="md"
         >
-          <NewsWrapper feedUrl={DEFAULT_FEED_URL} />
         </Drawer>
       )}
     </>

@@ -24,14 +24,10 @@ import * as barGaugePanel from 'app/plugins/panel/bargauge/module';
 import * as candlestickPanel from 'app/plugins/panel/candlestick/module';
 import * as dashListPanel from 'app/plugins/panel/dashlist/module';
 import * as dataGridPanel from 'app/plugins/panel/datagrid/module';
-import * as debugPanel from 'app/plugins/panel/debug/module';
 import * as flamegraphPanel from 'app/plugins/panel/flamegraph/module';
 import * as gaugePanel from 'app/plugins/panel/gauge/module';
-import * as gettingStartedPanel from 'app/plugins/panel/gettingstarted/module';
 import * as histogramPanel from 'app/plugins/panel/histogram/module';
-import * as livePanel from 'app/plugins/panel/live/module';
 import * as logsPanel from 'app/plugins/panel/logs/module';
-import * as newsPanel from 'app/plugins/panel/news/module';
 import * as nodeGraph from 'app/plugins/panel/nodeGraph/module';
 import * as pieChartPanel from 'app/plugins/panel/piechart/module';
 import * as statPanel from 'app/plugins/panel/stat/module';
@@ -42,7 +38,6 @@ import * as textPanel from 'app/plugins/panel/text/module';
 import * as timeseriesPanel from 'app/plugins/panel/timeseries/module';
 import * as tracesPanel from 'app/plugins/panel/traces/module';
 import * as trendPanel from 'app/plugins/panel/trend/module';
-import * as welcomeBanner from 'app/plugins/panel/welcome/module';
 import * as xyChartPanel from 'app/plugins/panel/xychart/module';
 
 // Async loaded panels
@@ -82,20 +77,15 @@ const builtInPlugins: Record<string, System.Module | (() => Promise<System.Modul
   'core:plugin/heatmap': heatmapPanel,
   'core:plugin/table': tablePanel,
   'core:plugin/table-old': tableOldPanel,
-  'core:plugin/news': newsPanel,
-  'core:plugin/live': livePanel,
   'core:plugin/stat': statPanel,
   'core:plugin/datagrid': dataGridPanel,
-  'core:plugin/debug': debugPanel,
   'core:plugin/flamegraph': flamegraphPanel,
-  'core:plugin/gettingstarted': gettingStartedPanel,
   'core:plugin/gauge': gaugePanel,
   'core:plugin/piechart': pieChartPanel,
   'core:plugin/bargauge': barGaugePanel,
   'core:plugin/barchart': barChartPanel,
   'core:plugin/logs': logsPanel,
   'core:plugin/traces': tracesPanel,
-  'core:plugin/welcome': welcomeBanner,
   'core:plugin/nodeGraph': nodeGraph,
   'core:plugin/histogram': histogramPanel,
   'core:plugin/alertGroups': alertGroupsPanel,
