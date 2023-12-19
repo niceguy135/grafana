@@ -2,8 +2,6 @@ const graphitePlugin = async () =>
   await import(/* webpackChunkName: "graphitePlugin" */ 'app/plugins/datasource/graphite/module');
 const dashboardDSPlugin = async () =>
   await import(/* webpackChunkName "dashboardDSPlugin" */ 'app/plugins/datasource/dashboard/module');
-const elasticsearchPlugin = async () =>
-  await import(/* webpackChunkName: "elasticsearchPlugin" */ 'app/plugins/datasource/elasticsearch/module');
 const grafanaPlugin = async () =>
   await import(/* webpackChunkName: "grafanaPlugin" */ 'app/plugins/datasource/grafana/module');
 const lokiPlugin = async () => await import(/* webpackChunkName: "lokiPlugin" */ 'app/plugins/datasource/loki/module');
@@ -60,7 +58,6 @@ const builtInPlugins: Record<string, System.Module | (() => Promise<System.Modul
   // datasources
   'core:plugin/graphite': graphitePlugin,
   'core:plugin/dashboard': dashboardDSPlugin,
-  'core:plugin/elasticsearch': elasticsearchPlugin,
   'core:plugin/grafana': grafanaPlugin,
   'core:plugin/loki': lokiPlugin,
   'core:plugin/mixed': mixedPlugin,
