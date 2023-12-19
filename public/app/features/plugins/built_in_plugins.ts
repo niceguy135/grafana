@@ -19,14 +19,8 @@ const zipkinPlugin = async () =>
   await import(/* webpackChunkName: "zipkinPlugin" */ 'app/plugins/datasource/zipkin/module');
 const mixedPlugin = async () =>
   await import(/* webpackChunkName: "mixedPlugin" */ 'app/plugins/datasource/mixed/module');
-const mysqlPlugin = async () =>
-  await import(/* webpackChunkName: "mysqlPlugin" */ 'app/plugins/datasource/mysql/module');
-const postgresPlugin = async () =>
-  await import(/* webpackChunkName: "postgresPlugin" */ 'app/plugins/datasource/postgres/module');
 const prometheusPlugin = async () =>
   await import(/* webpackChunkName: "prometheusPlugin" */ 'app/plugins/datasource/prometheus/module');
-const mssqlPlugin = async () =>
-  await import(/* webpackChunkName: "mssqlPlugin" */ 'app/plugins/datasource/mssql/module');
 const testDataDSPlugin = async () =>
   await import(/* webpackChunkName: "testDataDSPlugin" */ '@grafana-plugins/grafana-testdata-datasource/module');
 const cloudMonitoringPlugin = async () =>
@@ -93,9 +87,6 @@ const builtInPlugins: Record<string, System.Module | (() => Promise<System.Modul
   'core:plugin/jaeger': jaegerPlugin,
   'core:plugin/zipkin': zipkinPlugin,
   'core:plugin/mixed': mixedPlugin,
-  'core:plugin/mysql': mysqlPlugin,
-  'core:plugin/postgres': postgresPlugin,
-  'core:plugin/mssql': mssqlPlugin,
   'core:plugin/prometheus': prometheusPlugin,
   'core:plugin/grafana-testdata-datasource': testDataDSPlugin,
   'core:plugin/cloud-monitoring': cloudMonitoringPlugin,
