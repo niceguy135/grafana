@@ -10,7 +10,6 @@ import { GRAFANA_RULES_SOURCE_NAME } from '../../utils/datasource';
 import LabelsField from './LabelsField';
 import { NeedHelpInfo } from './NeedHelpInfo';
 import { RuleEditorSection } from './RuleEditorSection';
-import { NotificationPreview } from './notificaton-preview/NotificationPreview';
 
 type NotificationsStepProps = {
   alertUid?: string;
@@ -18,18 +17,11 @@ type NotificationsStepProps = {
 export const NotificationsStep = ({ alertUid }: NotificationsStepProps) => {
   const { watch } = useFormContext<RuleFormValues & { location?: string }>();
 
-  const [type, labels, queries, condition, folder, alertName] = watch([
-    'type',
-    'labels',
-    'queries',
-    'condition',
-    'folder',
-    'name',
+  const [type] = watch([
+    'type'
   ]);
 
   const dataSourceName = watch('dataSourceName') ?? GRAFANA_RULES_SOURCE_NAME;
-
-  const shouldRenderPreview = type === RuleFormType.grafana;
 
   const NotificationsStepDescription = () => {
     return (
@@ -98,16 +90,6 @@ export const NotificationsStep = ({ alertUid }: NotificationsStepProps) => {
       fullWidth
     >
       <LabelsField dataSourceName={dataSourceName} />
-      {shouldRenderPreview && (
-        <NotificationPreview
-          alertQueries={queries}
-          customLabels={labels}
-          condition={condition}
-          folder={folder}
-          alertName={alertName}
-          alertUid={alertUid}
-        />
-      )}
     </RuleEditorSection>
   );
 };

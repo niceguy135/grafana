@@ -21,8 +21,6 @@ const alertmanagerPlugin = async () =>
   await import(/* webpackChunkName: "alertmanagerPlugin" */ 'app/plugins/datasource/alertmanager/module');
 const pyroscopePlugin = async () =>
   await import(/* webpackChunkName: "pyroscopePlugin" */ 'app/plugins/datasource/grafana-pyroscope-datasource/module');
-const parcaPlugin = async () =>
-  await import(/* webpackChunkName: "parcaPlugin" */ 'app/plugins/datasource/parca/module');
 
 import * as alertGroupsPanel from 'app/plugins/panel/alertGroups/module';
 import * as alertListPanel from 'app/plugins/panel/alertlist/module';
@@ -76,7 +74,6 @@ const builtInPlugins: Record<string, System.Module | (() => Promise<System.Modul
   'core:plugin/grafana-testdata-datasource': testDataDSPlugin,
   'core:plugin/alertmanager': alertmanagerPlugin,
   'core:plugin/grafana-pyroscope-datasource': pyroscopePlugin,
-  'core:plugin/parca': parcaPlugin,
   // panels
   'core:plugin/text': textPanel,
   'core:plugin/timeseries': timeseriesPanel,
