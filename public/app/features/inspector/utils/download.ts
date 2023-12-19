@@ -11,7 +11,6 @@ import {
 } from '@grafana/data';
 
 import { transformToJaeger } from '../../../plugins/datasource/jaeger/responseTransform';
-import { transformToOTLP } from '../../../plugins/datasource/tempo/resultTransformer';
 import { transformToZipkin } from '../../../plugins/datasource/zipkin/utils/transforms';
 
 /**
@@ -101,12 +100,6 @@ export function downloadTraceAsJson(frame: DataFrame, title: string): string {
       let res = transformToZipkin(new MutableDataFrame(frame));
       downloadAsJson(res, title);
       traceFormat = 'zipkin';
-      break;
-    }
-    case 'otlp':
-    default: {
-      let res = transformToOTLP(new MutableDataFrame(frame));
-      downloadAsJson(res, title);
       break;
     }
   }

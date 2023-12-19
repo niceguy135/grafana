@@ -23,8 +23,6 @@ const prometheusPlugin = async () =>
   await import(/* webpackChunkName: "prometheusPlugin" */ 'app/plugins/datasource/prometheus/module');
 const testDataDSPlugin = async () =>
   await import(/* webpackChunkName: "testDataDSPlugin" */ '@grafana-plugins/grafana-testdata-datasource/module');
-const tempoPlugin = async () =>
-  await import(/* webpackChunkName: "tempoPlugin" */ 'app/plugins/datasource/tempo/module');
 const alertmanagerPlugin = async () =>
   await import(/* webpackChunkName: "alertmanagerPlugin" */ 'app/plugins/datasource/alertmanager/module');
 const pyroscopePlugin = async () =>
@@ -85,7 +83,6 @@ const builtInPlugins: Record<string, System.Module | (() => Promise<System.Modul
   'core:plugin/mixed': mixedPlugin,
   'core:plugin/prometheus': prometheusPlugin,
   'core:plugin/grafana-testdata-datasource': testDataDSPlugin,
-  'core:plugin/tempo': tempoPlugin,
   'core:plugin/alertmanager': alertmanagerPlugin,
   'core:plugin/grafana-pyroscope-datasource': pyroscopePlugin,
   'core:plugin/parca': parcaPlugin,
