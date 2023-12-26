@@ -16,6 +16,7 @@ export interface Props {
 }
 
 export const MegaMenu = React.memo<Props>(({ onClose, searchBarHidden }) => {
+  const allowedPanels = ["home", "dashboards/browse", "explore", "connections"];
   const navBarTree = useSelector((state) => state.navBarTree);
   const theme = useTheme2();
   const styles = getStyles(theme);
@@ -25,7 +26,9 @@ export const MegaMenu = React.memo<Props>(({ onClose, searchBarHidden }) => {
 
   // Remove profile + help from tree
   const navItems = navTree
-    .filter((item) => item.id !== 'profile' && item.id !== 'help')
+    .filter((item) => item.id !== 'profile' &&
+                      item.id !== 'help' &&
+                      allowedPanels.includes(item.id!))
     .map((item) => enrichWithInteractionTracking(item, true));
 
   const activeItem = getActiveItem(navItems, location.pathname);
