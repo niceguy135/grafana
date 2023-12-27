@@ -6,13 +6,8 @@ import {
   DataTransformerID,
   dateTimeFormat,
   LogsModel,
-  MutableDataFrame,
   toCSV,
 } from '@grafana/data';
-
-import { transformToJaeger } from '../../../plugins/datasource/jaeger/responseTransform';
-import { transformToOTLP } from '../../../plugins/datasource/tempo/resultTransformer';
-import { transformToZipkin } from '../../../plugins/datasource/zipkin/utils/transforms';
 
 /**
  * Downloads a DataFrame as a TXT file.
@@ -89,26 +84,5 @@ export function downloadAsJson(json: unknown, title: string) {
  * @param {string} title
  */
 export function downloadTraceAsJson(frame: DataFrame, title: string): string {
-  let traceFormat = 'otlp';
-  switch (frame.meta?.custom?.traceFormat) {
-    case 'jaeger': {
-      let res = transformToJaeger(new MutableDataFrame(frame));
-      downloadAsJson(res, title);
-      traceFormat = 'jaeger';
-      break;
-    }
-    case 'zipkin': {
-      let res = transformToZipkin(new MutableDataFrame(frame));
-      downloadAsJson(res, title);
-      traceFormat = 'zipkin';
-      break;
-    }
-    case 'otlp':
-    default: {
-      let res = transformToOTLP(new MutableDataFrame(frame));
-      downloadAsJson(res, title);
-      break;
-    }
-  }
-  return traceFormat;
+  return "All plugins for this stuff has been deleted!";
 }

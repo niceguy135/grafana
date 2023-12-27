@@ -22,7 +22,6 @@ import { getTraceToLogsOptions } from 'app/core/components/TraceToLogs/TraceToLo
 import { TraceToMetricsData } from 'app/core/components/TraceToMetrics/TraceToMetricsSettings';
 import { getDatasourceSrv } from 'app/features/plugins/datasource_srv';
 import { getTimeZone } from 'app/features/profile/state/selectors';
-import { TempoQuery } from 'app/plugins/datasource/tempo/types';
 import { useDispatch, useSelector } from 'app/types';
 
 import { changePanelState } from '../state/explorePane';
@@ -280,7 +279,7 @@ function useFocusSpanLink(options: {
     // Check if the link is to a different trace or not.
     // If it's the same trace, only update panel state with setFocusedSpanId (no navigation).
     // If it's a different trace, use splitOpenFn to open a new explore panel
-    const sameTrace = query?.queryType === 'traceql' && (query as TempoQuery).query === traceId;
+    const sameTrace = query?.queryType === 'traceql';
 
     return mapInternalLinkToExplore({
       link,
